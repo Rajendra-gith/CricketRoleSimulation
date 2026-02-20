@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:4.2.2
+      image: barichello/godot-ci:4.6.1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,8 +20,8 @@ jobs:
       - name: Install Godot export templates
         run: |
           set -e
-          VERSION_DIR="4.2.2.stable"
-          VERSION_TAG="4.2.2-stable"
+          VERSION_DIR="4.6.1.stable"
+          VERSION_TAG="4.6.1-stable"
           TEMPLATE_DIR="/github/home/.local/share/godot/export_templates/${VERSION_DIR}"
 
           mkdir -p "${TEMPLATE_DIR}"
