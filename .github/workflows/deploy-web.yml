@@ -33,12 +33,16 @@ jobs:
             cp "$file" "${TEMPLATE_DIR}/$(basename "$file")"
           done
 
-      - name: Force no-thread web template
-        run: |
-          set -e
-          TEMPLATE_DIR="/github/home/.local/share/godot/export_templates/4.2.2.stable"
-          sed -i 's|^custom_template/debug=.*|custom_template/debug="'"${TEMPLATE_DIR}"'/web_nothreads_debug.zip"|' export_presets.cfg
-          sed -i 's|^custom_template/release=.*|custom_template/release="'"${TEMPLATE_DIR}"'/web_nothreads_release.zip"|' export_presets.cfg
+          # Godot can require web_nothreads_* names when thread_support is false.
+          # If the downloaded template set only has web_debug/web_release, provide aliases.
+          if [ ! -f "${TEMPLATE_DIR}/web_nothreads_debug.zip" ] && [ -f "${TEMPLATE_DIR}/web_debug.zip" ]; then
+            cp "${TEMPLATE_DIR}/web_debug.zip" "${TEMPLATE_DIR}/web_nothreads_debug.zip"
+          fi
+          if [ ! -f "${TEMPLATE_DIR}/web_nothreads_release.zip" ] && [ -f "${TEMPLATE_DIR}/web_release.zip" ]; then
+            cp "${TEMPLATE_DIR}/web_release.zip" "${TEMPLATE_DIR}/web_nothreads_release.zip"
+          fi
+
+          ls -la "${TEMPLATE_DIR}"/web*.zip
 
       - name: Export web build
         run: |
