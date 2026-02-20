@@ -29,8 +29,9 @@ jobs:
 
           mkdir -p /tmp/godot_templates
           unzip -q /tmp/templates.tpz -d /tmp/godot_templates
-          cp /tmp/godot_templates/templates/web_debug.zip "${TEMPLATE_DIR}/web_debug.zip"
-          cp /tmp/godot_templates/templates/web_release.zip "${TEMPLATE_DIR}/web_release.zip"
+          for file in /tmp/godot_templates/templates/web*.zip; do
+            cp "$file" "${TEMPLATE_DIR}/$(basename "$file")"
+          done
 
       - name: Export web build
         run: |
