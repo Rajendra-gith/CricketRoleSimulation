@@ -1,0 +1,88 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/MatchSceneController.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/systems/CameraManager.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/systems/UIManager.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/controllers/BattingController.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/controllers/BowlingController.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/systems/AnimationManager.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/systems/FieldingSystem.gd" id="7"]
+
+[sub_resource type="CylinderMesh" id="1"]
+height = 0.4
+bottom_radius = 38.0
+top_radius = 38.0
+
+[sub_resource type="BoxMesh" id="2"]
+size = Vector3(3, 0.1, 20)
+
+[sub_resource type="SphereMesh" id="3"]
+radius = 0.12
+height = 0.24
+
+[node name="MatchScene" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-45, -20, 0)
+light_energy = 1.6
+shadow_enabled = true
+
+[node name="Stadium" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Stadium"]
+mesh = SubResource("1")
+
+[node name="Pitch" type="MeshInstance3D" parent="Stadium"]
+mesh = SubResource("2")
+position = Vector3(0, 0.2, 0)
+
+[node name="Ball" type="MeshInstance3D" parent="."]
+mesh = SubResource("3")
+position = Vector3(0, 1, -8)
+
+[node name="Cameras" type="Node3D" parent="."]
+script = ExtResource("2")
+
+[node name="BroadcastCamera" type="Camera3D" parent="Cameras"]
+position = Vector3(0, 15, -28)
+rotation_degrees = Vector3(-20, 0, 0)
+
+[node name="RunupCamera" type="Camera3D" parent="Cameras"]
+position = Vector3(0, 2.2, -13)
+rotation_degrees = Vector3(-4, 0, 0)
+
+[node name="StrikerCamera" type="Camera3D" parent="Cameras"]
+position = Vector3(1.2, 2.0, 6)
+rotation_degrees = Vector3(-8, 180, 0)
+
+[node name="TrackingCamera" type="Camera3D" parent="Cameras"]
+position = Vector3(0, 6, -2)
+rotation_degrees = Vector3(-12, 0, 0)
+
+[node name="AerialCamera" type="Camera3D" parent="Cameras"]
+position = Vector3(0, 38, 0)
+rotation_degrees = Vector3(-90, 0, 0)
+
+[node name="ReplayCamera" type="Camera3D" parent="Cameras"]
+position = Vector3(-8, 3, 2)
+rotation_degrees = Vector3(-10, -60, 0)
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3")
+
+[node name="Controllers" type="Node" parent="."]
+
+[node name="BattingController" type="Node" parent="Controllers"]
+script = ExtResource("4")
+
+[node name="BowlingController" type="Node" parent="Controllers"]
+script = ExtResource("5")
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="AnimationManager" type="Node" parent="Systems"]
+script = ExtResource("6")
+
+[node name="FieldingSystem" type="Node" parent="Systems"]
+script = ExtResource("7")
