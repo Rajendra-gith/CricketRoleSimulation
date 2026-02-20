@@ -23,6 +23,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Godot export templates
+        run: |
+          set -e
+          VERSION_DIR="4.2.2.stable"
+          VERSION_TAG="4.2.2-stable"
+          TEMPLATE_DIR="/github/home/.local/share/godot/export_templates/${VERSION_DIR}"
+
+          mkdir -p "${TEMPLATE_DIR}"
+          wget -q -O /tmp/templates.tpz "https://github.com/godotengine/godot/releases/download/${VERSION_TAG}/Godot_v${VERSION_TAG}_export_templates.tpz"
+
+          mkdir -p /tmp/godot_templates
+          unzip -q /tmp/templates.tpz -d /tmp/godot_templates
+          cp /tmp/godot_templates/templates/web_debug.zip "${TEMPLATE_DIR}/web_debug.zip"
+          cp /tmp/godot_templates/templates/web_release.zip "${TEMPLATE_DIR}/web_release.zip"
+
       - name: Export web build
         run: |
           mkdir -p build/web
