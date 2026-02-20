@@ -33,6 +33,13 @@ jobs:
             cp "$file" "${TEMPLATE_DIR}/$(basename "$file")"
           done
 
+      - name: Force no-thread web template
+        run: |
+          set -e
+          TEMPLATE_DIR="/github/home/.local/share/godot/export_templates/4.2.2.stable"
+          sed -i 's|^custom_template/debug=.*|custom_template/debug="'"${TEMPLATE_DIR}"'/web_nothreads_debug.zip"|' export_presets.cfg
+          sed -i 's|^custom_template/release=.*|custom_template/release="'"${TEMPLATE_DIR}"'/web_nothreads_release.zip"|' export_presets.cfg
+
       - name: Export web build
         run: |
           mkdir -p build/web
